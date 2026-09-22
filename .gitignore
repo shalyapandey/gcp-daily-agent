@@ -1,0 +1,21 @@
+# Python virtual environment
+.venv/
+venv/
+env/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables & secrets
+.env
+*.env.local
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# Test / Scratch files
+scratch/
+test_feed.xml
