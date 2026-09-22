@@ -6,12 +6,16 @@ An autonomous, serverless AI agent that tracks newly released features, deprecat
 
 ## 🌟 Key Features
 
-* **Real-time Feed Ingestion**: Ingests the official [Google Cloud Release Notes Atom Feed](https://cloud.google.com/feeds/gcp-release-notes.xml) and [Google Cloud Blog RSS](https://cloud.google.com/blog/rss).
+* **Multi-Source Feed Ingestion**:
+  * Official [Google Cloud Release Notes Atom Feed](https://cloud.google.com/feeds/gcp-release-notes.xml)
+  * [Google Cloud Blog RSS](https://cloud.google.com/blog/rss)
+  * [SnowNews / Last Week in Google Cloud RSS](https://snownews.appspot.com/) (aggregating Medium engineering deep dives & Google Workspace updates)
 * **AI-Powered Synthesis**: Uses `gemini-2.5-flash` via the modern `google-genai` SDK to categorize updates into:
   * ⚡ **Executive Summary**
   * 🚀 **Key Highlights & Major Launches**
   * ⚠️ **Breaking Changes & Deprecations** (EOS warnings, migration deadlines)
   * 🛠️ **Categorized Feature Updates** (AI/ML, Compute, Databases, Security, Networking)
+  * 📚 **Community Insights & Deep Dives** (Medium tutorials, benchmarks, architectural case studies)
   * 💡 **Architect's Takeaway**
 * **Serverless & 100% Free**: Operates entirely within GitHub Actions scheduled cron runs and the free tier of the Gemini API.
 * **Multi-Channel Delivery**:

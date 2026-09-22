@@ -48,6 +48,15 @@ class BlogItem:
 
 
 @dataclass
+class CommunityItem:
+    """Community article or ecosystem update (e.g. from SnowNews, Medium)."""
+    title: str
+    link: str
+    source: str  # e.g. Medium, Google Workspace Updates, Cloud Blog
+    published_date: Optional[str] = None
+
+
+@dataclass
 class DailyUpdates:
     """Aggregated updates for the lookback period."""
     lookback_hours: int
@@ -55,10 +64,11 @@ class DailyUpdates:
     end_time_utc: datetime.datetime
     release_notes: List[ReleaseNoteItem] = field(default_factory=list)
     blog_posts: List[BlogItem] = field(default_factory=list)
+    community_articles: List[CommunityItem] = field(default_factory=list)
 
     @property
     def total_count(self) -> int:
-        return len(self.release_notes) + len(self.blog_posts)
+        return len(self.release_notes) + len(self.blog_posts) + len(self.community_articles)
 
 
 class SimpleHTMLTextExtractor(HTMLParser):
@@ -96,6 +106,16 @@ def parse_date_string(date_str: str) -> Optional[datetime.datetime]:
             return dt.astimezone(datetime.timezone.utc)
         except Exception:
             pass
+
+    # Standard library email.utils for RFC 2822 / RSS pubDate (e.g., 'Tue, 22 Sep 2026 19:41:32 +0000')
+    try:
+        import email.utils
+        dt = email.utils.parsedate_to_datetime(date_str)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=datetime.timezone.utc)
+        return dt.astimezone(datetime.timezone.utc)
+    except Exception:
+        pass
 
     # Built-in fromisoformat (Python 3.11+)
     try:
@@ -224,8 +244,10 @@ def fetch_raw_feed_text(source: str) -> str:
 def fetch_updates(
     release_notes_source: str,
     blog_source: Optional[str] = None,
+    snownews_source: Optional[str] = None,
     lookback_hours: int = 24,
     include_blog: bool = True,
+    include_snownews: bool = True,
 ) -> DailyUpdates:
     """Fetch and aggregate updates within the lookback window."""
     now_utc = datetime.datetime.now(datetime.timezone.utc)
@@ -236,6 +258,8 @@ def fetch_updates(
         start_time_utc=cutoff_utc,
         end_time_utc=now_utc,
     )
+
+    seen_links = set()
 
     # 1. Fetch GCP Release Notes (Atom)
     try:
@@ -278,12 +302,15 @@ def fetch_updates(
                     dt_str = getattr(entry, "published", getattr(entry, "updated", None))
                     entry_dt = parse_date_string(dt_str) if dt_str else None
                     if entry_dt and entry_dt >= cutoff_utc:
+                        link = getattr(entry, "link", "")
                         summary = getattr(entry, "summary", "")
                         summary_clean = re.sub(r"<[^>]+>", "", summary).strip()
+                        if link:
+                            seen_links.add(link)
                         updates.blog_posts.append(
                             BlogItem(
                                 title=getattr(entry, "title", "Untitled"),
-                                link=getattr(entry, "link", ""),
+                                link=link,
                                 summary=summary_clean,
                                 published_date=entry_dt.strftime("%Y-%m-%d"),
                             )
@@ -298,15 +325,72 @@ def fetch_updates(
                         title_el = item.find("title")
                         link_el = item.find("link")
                         desc_el = item.find("description")
+                        link = link_el.text if link_el is not None else ""
+                        if link:
+                            seen_links.add(link)
                         updates.blog_posts.append(
                             BlogItem(
                                 title=title_el.text if title_el is not None else "Untitled",
-                                link=link_el.text if link_el is not None else "",
+                                link=link,
                                 summary=re.sub(r"<[^>]+>", "", desc_el.text).strip() if desc_el is not None and desc_el.text else "",
                                 published_date=entry_dt.strftime("%Y-%m-%d"),
                             )
                         )
         except Exception as e:
             print(f"[Warning] Failed to fetch blog feed from {blog_source}: {e}")
+
+    # 3. Fetch SnowNews feed (Medium community articles & Workspace updates)
+    if include_snownews and snownews_source:
+        try:
+            raw_sn = fetch_raw_feed_text(snownews_source)
+            if feedparser:
+                feed = feedparser.parse(raw_sn)
+                for entry in feed.entries:
+                    dt_str = getattr(entry, "published", getattr(entry, "updated", None))
+                    entry_dt = parse_date_string(dt_str) if dt_str else None
+                    if entry_dt and entry_dt >= cutoff_utc:
+                        source_tag = getattr(entry, "description", "Community").strip()
+                        # Avoid duplicating release notes which are already parsed from official atom feed
+                        if "/release-notes" in link or (source_tag.startswith("(") and source_tag.endswith(")")):
+                            continue
+                        if link in seen_links:
+                            continue
+                        seen_links.add(link)
+                        updates.community_articles.append(
+                            CommunityItem(
+                                title=getattr(entry, "title", "Untitled"),
+                                link=link,
+                                source=source_tag,
+                                published_date=entry_dt.strftime("%Y-%m-%d"),
+                            )
+                        )
+            else:
+                clean_xml = re.sub(r'xmlns="[^"]+"', '', raw_sn, count=1)
+                root = ET.fromstring(clean_xml)
+                for item in root.findall(".//item"):
+                    pub_date = item.find("pubDate")
+                    entry_dt = parse_date_string(pub_date.text) if pub_date is not None and pub_date.text else None
+                    if entry_dt and entry_dt >= cutoff_utc:
+                        title_el = item.find("title")
+                        link_el = item.find("link")
+                        desc_el = item.find("description")
+                        link = link_el.text.strip() if link_el is not None and link_el.text else ""
+                        source_tag = desc_el.text.strip() if desc_el is not None and desc_el.text else "Community"
+                        # Avoid duplicating release notes which are already parsed from official atom feed
+                        if "/release-notes" in link or (source_tag.startswith("(") and source_tag.endswith(")")):
+                            continue
+                        if link in seen_links:
+                            continue
+                        seen_links.add(link)
+                        updates.community_articles.append(
+                            CommunityItem(
+                                title=title_el.text if title_el is not None else "Untitled",
+                                link=link,
+                                source=source_tag,
+                                published_date=entry_dt.strftime("%Y-%m-%d"),
+                            )
+                        )
+        except Exception as e:
+            print(f"[Warning] Failed to fetch SnowNews feed from {snownews_source}: {e}")
 
     return updates

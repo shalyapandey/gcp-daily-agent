@@ -18,6 +18,7 @@ class Config:
     # Feed Sources
     release_notes_url: str = "https://cloud.google.com/feeds/gcp-release-notes.xml"
     blog_rss_url: str = "https://cloud.google.com/blog/rss"
+    snownews_feed_url: str = "https://snownews.appspot.com/feed"
     
     # Notification targets
     slack_webhook_url: Optional[str] = os.environ.get("SLACK_WEBHOOK_URL")
@@ -27,6 +28,7 @@ class Config:
     # Defaults
     lookback_hours: int = int(os.environ.get("LOOKBACK_HOURS", "24"))
     include_blog: bool = os.environ.get("INCLUDE_BLOG", "true").lower() in ("true", "1", "yes")
+    include_snownews: bool = os.environ.get("INCLUDE_SNOWNEWS", "true").lower() in ("true", "1", "yes")
     digest_dir: str = os.environ.get("DIGEST_DIR", "digests")
 
 

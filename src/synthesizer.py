@@ -43,6 +43,9 @@ Structure your response with these exact sections:
 ### Security, Identity & Governance (IAM, Secret Manager, Cloud Armor)
 ### Management, Developer Tools & Others
 
+## 📚 Community Insights & Deep Dives (Medium / Ecosystem)
+(If community articles or Medium guides are present, summarize the top 2-4 most practical tutorials, benchmarks, or architectures with direct links)
+
 ## 💡 Architect's Takeaway
 (1-2 actionable sentences: what should engineering teams test, inspect, or prepare for today?)
 """
@@ -54,7 +57,8 @@ def format_raw_updates_text(updates: DailyUpdates) -> str:
     lines.append(f"Lookback window: Last {updates.lookback_hours} hours")
     lines.append(f"Period: {updates.start_time_utc.isoformat()} to {updates.end_time_utc.isoformat()}")
     lines.append(f"Total Release Notes Items: {len(updates.release_notes)}")
-    lines.append(f"Total Blog Articles: {len(updates.blog_posts)}\n")
+    lines.append(f"Total Blog Articles: {len(updates.blog_posts)}")
+    lines.append(f"Total Community & Ecosystem Articles: {len(updates.community_articles)}\n")
 
     if updates.release_notes:
         lines.append("=== GOOGLE CLOUD RELEASE NOTES ===")
@@ -77,6 +81,16 @@ def format_raw_updates_text(updates: DailyUpdates) -> str:
                 f"  Summary: {post.summary}\n"
             )
 
+    if updates.community_articles:
+        lines.append("\n=== COMMUNITY ARTICLES & ECOSYSTEM UPDATES (via SnowNews) ===")
+        for art in updates.community_articles:
+            lines.append(
+                f"- Title: {art.title}\n"
+                f"  Source: {art.source}\n"
+                f"  Date: {art.published_date}\n"
+                f"  URL: {art.link}\n"
+            )
+
     return "\n".join(lines)
 
 
@@ -88,10 +102,10 @@ def generate_fallback_summary(updates: DailyUpdates) -> str:
         return f"""# ☁️ Google Cloud Daily Briefing — {today}
 
 ## ⚡ Executive Summary
-No official release notes or blog updates were recorded for Google Cloud in the past {updates.lookback_hours} hours. All services remain on steady state.
+No official release notes, blog updates, or community posts were recorded for Google Cloud in the past {updates.lookback_hours} hours. All services remain on steady state.
 
 ## 🛠️ Status Check
-- Checked feeds: Google Cloud Release Notes Atom & GCP Blog.
+- Checked feeds: Google Cloud Release Notes Atom, GCP Blog, & SnowNews.
 - Window: {updates.start_time_utc.strftime('%Y-%m-%d %H:%M UTC')} - {updates.end_time_utc.strftime('%Y-%m-%d %H:%M UTC')}.
 """
 
@@ -116,6 +130,12 @@ No official release notes or blog updates were recorded for Google Cloud in the 
         lines.append("## 📰 Google Cloud Blog Posts")
         for post in updates.blog_posts:
             lines.append(f"- [{post.title}]({post.link}): {post.summary}")
+        lines.append("")
+
+    if updates.community_articles:
+        lines.append("## 📚 Community Insights & Ecosystem Updates (via SnowNews)")
+        for art in updates.community_articles:
+            lines.append(f"- **[{art.source}]** [{art.title}]({art.link})")
         lines.append("")
 
     return "\n".join(lines)

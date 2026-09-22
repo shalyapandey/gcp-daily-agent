@@ -38,14 +38,30 @@ def main():
         help="URL or local path to GCP blog RSS feed",
     )
     parser.add_argument(
+        "--snownews-url",
+        type=str,
+        default=config.snownews_feed_url,
+        help="URL or local path to SnowNews RSS feed",
+    )
+    parser.add_argument(
         "--no-blog",
         action="store_true",
         help="Disable fetching Google Cloud Blog posts",
     )
     parser.add_argument(
+        "--no-snownews",
+        action="store_true",
+        help="Disable fetching SnowNews community feed",
+    )
+    parser.add_argument(
         "--mock-feed",
         type=str,
-        help="Path to a local XML file to use instead of fetching live feeds (useful for testing/offline)",
+        help="Path to a local XML file to use instead of fetching live release notes feed",
+    )
+    parser.add_argument(
+        "--mock-snownews-feed",
+        type=str,
+        help="Path to a local XML file to use instead of fetching live SnowNews feed",
     )
     parser.add_argument(
         "--dry-run",
@@ -70,16 +86,25 @@ def main():
     # Determine feed sources
     feed_source = args.mock_feed if args.mock_feed else args.feed_url
     blog_source = None if (args.no_blog or not config.include_blog or args.mock_feed) else args.blog_url
+    snownews_source = args.mock_snownews_feed if args.mock_snownews_feed else (
+        None if (args.no_snownews or not config.include_snownews) else args.snownews_url
+    )
 
     print(f"Fetching updates from: {feed_source}")
     updates = fetch_updates(
         release_notes_source=feed_source,
         blog_source=blog_source,
+        snownews_source=snownews_source,
         lookback_hours=args.hours_back,
         include_blog=(not args.no_blog and config.include_blog and not args.mock_feed),
+        include_snownews=(not args.no_snownews and config.include_snownews),
     )
 
-    print(f"[Stats] Fetched {len(updates.release_notes)} release note items, {len(updates.blog_posts)} blog posts.")
+    print(
+        f"[Stats] Fetched {len(updates.release_notes)} release notes, "
+        f"{len(updates.blog_posts)} blog posts, "
+        f"{len(updates.community_articles)} community articles."
+    )
 
     # Synthesize with Gemini
     print("Synthesizing briefing...")
