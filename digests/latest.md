@@ -1,7 +1,12 @@
-# ☁️ Google Cloud Daily Briefing — November 04, 2026
+# ☁️ Google Cloud Daily Briefing — November 05, 2026
 
 ## ⚡ Executive Summary
-No new official Google Cloud release updates or announcements were published in the last 24 hours.
+Found 1 updates across Google Cloud in the past 24 hours.
 
-- **Status**: All systems steady.
-- **Monitoring Window**: 2026-11-03 15:50 UTC to 2026-11-04 15:50 UTC.
+## 🛠️ Release Notes
+### Model Armor
+- **[Feature]**: You can enable or disable the child sexual abuse material (CSAM) filter in
+Model Armor templates and floor settings, and configure granular
+confidence levels ( High , Medium and above , and Low and above ). For more information, see Model Armor
+filters and Create and manage
+templates . [Doc](https://docs.cloud.google.com/model-armor/overview#ma-csam-detection) [Doc](https://docs.cloud.google.com/model-armor/manage-templates#configure-detections)
