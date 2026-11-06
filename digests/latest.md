@@ -1,12 +1,9 @@
-# ☁️ Google Cloud Daily Briefing — November 05, 2026
+# ☁️ Google Cloud Daily Briefing — November 06, 2026
 
 ## ⚡ Executive Summary
 Found 1 updates across Google Cloud in the past 24 hours.
 
 ## 🛠️ Release Notes
-### Model Armor
-- **[Feature]**: You can enable or disable the child sexual abuse material (CSAM) filter in
-Model Armor templates and floor settings, and configure granular
-confidence levels ( High , Medium and above , and Low and above ). For more information, see Model Armor
-filters and Create and manage
-templates . [Doc](https://docs.cloud.google.com/model-armor/overview#ma-csam-detection) [Doc](https://docs.cloud.google.com/model-armor/manage-templates#configure-detections)
+### Bigtable
+- **[Feature]**: You can configure a Bigtable automated backup policy on SSD instances to create daily hot backups and specify how long the backups remain hot before automatically transitioning
+to standard backups. This feature is generally available (GA) . [Doc](https://docs.cloud.google.com/bigtable/docs/managing-backups#configure-hot-automated-backups) [Doc](https://docs.cloud.google.com/bigtable/docs/backups#hot-backups) [Doc](https://cloud.google.com/products#product-launch-stages)
