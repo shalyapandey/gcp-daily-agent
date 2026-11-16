@@ -1,7 +1,11 @@
-# ☁️ Google Cloud Daily Briefing — November 15, 2026
+# ☁️ Google Cloud Daily Briefing — November 16, 2026
 
 ## ⚡ Executive Summary
-No new official Google Cloud release updates or announcements were published in the last 24 hours.
+Found 1 updates across Google Cloud in the past 24 hours.
 
-- **Status**: All systems steady.
-- **Monitoring Window**: 2026-11-14 15:05 UTC to 2026-11-15 15:05 UTC.
+## 🛠️ Release Notes
+### Google Cloud Armor
+- **[Feature]**: Cloud Armor supports Autonomous System Numbers (ASNs), Network Threat
+Intelligence (NTI), and HTTP filtering in globally scoped edge security
+policies for Cloud CDN edge
+cache services in Preview. [Doc](https://docs.cloud.google.com/armor/docs/security-policy-overview#expandable-1)
