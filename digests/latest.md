@@ -1,11 +1,7 @@
-# ☁️ Google Cloud Daily Briefing — November 18, 2026
+# ☁️ Google Cloud Daily Briefing — November 19, 2026
 
 ## ⚡ Executive Summary
-Found 1 updates across Google Cloud in the past 24 hours.
+No new official Google Cloud release updates or announcements were published in the last 24 hours.
 
-## 🛠️ Release Notes
-### Application Integration
-- **[Security]**: A Deserialization of Untrusted Data vulnerability was discovered
-in integration execution parameter handling in Application Integration
-versions prior to September 22, 2026.
-For more information, see the GCP-2026-083 security bulletin. [Doc](https://docs.cloud.google.com/application-integration/docs/security-bulletins#gcp-2026-083)
+- **Status**: All systems steady.
+- **Monitoring Window**: 2026-11-18 16:54 UTC to 2026-11-19 16:54 UTC.
