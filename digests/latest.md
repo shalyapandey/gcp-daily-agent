@@ -1,7 +1,17 @@
-# ☁️ Google Cloud Daily Briefing — November 22, 2026
+# ☁️ Google Cloud Daily Briefing — November 23, 2026
 
 ## ⚡ Executive Summary
-No new official Google Cloud release updates or announcements were published in the last 24 hours.
+Found 2 updates across Google Cloud in the past 24 hours.
 
-- **Status**: All systems steady.
-- **Monitoring Window**: 2026-11-21 15:45 UTC to 2026-11-22 15:45 UTC.
+## 🛠️ Release Notes
+### NetApp Volumes
+- **[Announcement]**: Through December 31, 2026, Google Cloud NetApp Volumes sends email notifications
+to the Google group for NetApp Volumes maintenance, in addition to Unified Maintenance alerts.
+After December 31, 2026, NetApp Volumes no longer sends email notifications to
+the Google group, and Unified Maintenance is the only source of planned
+maintenance notifications. For more information, see Monitor and plan for maintenance events . [Doc](https://docs.cloud.google.com/unified-maintenance/docs/overview) [Doc](https://docs.cloud.google.com/netapp/volumes/docs/monitor/maintenance-events)
+- **[Feature]**: Google Cloud NetApp Volumes is integrated with Unified Maintenance . This integration
+supports the Flex Unified, Flex File, Standard, Premium, and Extreme service
+levels. You can view upcoming and past planned maintenance events for your storage pools
+in Cloud Hub, and track event logs and configure automated alerts in Cloud
+Logging. For more information, see Monitor and plan for maintenance events . [Doc](https://docs.cloud.google.com/unified-maintenance/docs/overview) [Doc](https://docs.cloud.google.com/netapp/volumes/docs/monitor/maintenance-events)
