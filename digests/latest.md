@@ -1,7 +1,10 @@
-# ☁️ Google Cloud Daily Briefing — November 25, 2026
+# ☁️ Google Cloud Daily Briefing — November 26, 2026
 
 ## ⚡ Executive Summary
-No new official Google Cloud release updates or announcements were published in the last 24 hours.
+Found 1 updates across Google Cloud in the past 24 hours.
 
-- **Status**: All systems steady.
-- **Monitoring Window**: 2026-11-24 18:15 UTC to 2026-11-25 18:15 UTC.
+## 🛠️ Release Notes
+### Managed Service for Apache Airflow
+- **[Feature]**: Agentic upgrade check is available in Managed Airflow. Before upgrading your environment, you can run an upgrade check in the Google
+Cloud console to ask Managed Airflow Agent what changes your DAGs require to
+work with a selected Airflow build or image version. [Doc](https://docs.cloud.google.com/composer/docs/composer-3/upgrade-environments#agentic-upgrade-check)
