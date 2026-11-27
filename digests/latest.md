@@ -1,10 +1,8 @@
-# ☁️ Google Cloud Daily Briefing — November 26, 2026
+# ☁️ Google Cloud Daily Briefing — November 27, 2026
 
 ## ⚡ Executive Summary
 Found 1 updates across Google Cloud in the past 24 hours.
 
 ## 🛠️ Release Notes
-### Managed Service for Apache Airflow
-- **[Feature]**: Agentic upgrade check is available in Managed Airflow. Before upgrading your environment, you can run an upgrade check in the Google
-Cloud console to ask Managed Airflow Agent what changes your DAGs require to
-work with a selected Airflow build or image version. [Doc](https://docs.cloud.google.com/composer/docs/composer-3/upgrade-environments#agentic-upgrade-check)
+### Managed Service for Apache Spark
+- **[Feature]**: Private Preview: Managed Service for Apache Spark on GKE v2 Run fully managed Apache Spark workloads natively on your Standard GKE clusters with the next-generation Managed Service for Apache Spark on GKE. To enroll in the preview and get projects allowlisted, reach out to dataproc-previews@google.com.
