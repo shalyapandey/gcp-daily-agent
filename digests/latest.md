@@ -1,8 +1,7 @@
-# ☁️ Google Cloud Daily Briefing — November 27, 2026
+# ☁️ Google Cloud Daily Briefing — November 28, 2026
 
 ## ⚡ Executive Summary
-Found 1 updates across Google Cloud in the past 24 hours.
+No new official Google Cloud release updates or announcements were published in the last 24 hours.
 
-## 🛠️ Release Notes
-### Managed Service for Apache Spark
-- **[Feature]**: Private Preview: Managed Service for Apache Spark on GKE v2 Run fully managed Apache Spark workloads natively on your Standard GKE clusters with the next-generation Managed Service for Apache Spark on GKE. To enroll in the preview and get projects allowlisted, reach out to dataproc-previews@google.com.
+- **Status**: All systems steady.
+- **Monitoring Window**: 2026-11-27 16:28 UTC to 2026-11-28 16:28 UTC.
